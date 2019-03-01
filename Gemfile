@@ -6,7 +6,7 @@ gem "administrate-field-image"
 gem "autoprefixer-rails"
 gem "faker"
 gem "globalid"
-gem "pg", "0.21.0"
+gem "pg"
 gem "redcarpet"
 gem "sentry-raven"
 gem "unicorn"
@@ -18,21 +18,23 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "factory_bot_rails"
-  gem "i18n-tasks"
+  gem "i18n-tasks", "0.9.24"
   gem "pry-rails"
   gem "rspec-rails"
 end
 
 group :test do
   gem "ammeter"
+  gem "capybara", "2.18.0"
   gem "database_cleaner"
   gem "formulaic"
   gem "launchy"
   gem "poltergeist"
+  gem "pundit"
   gem "shoulda-matchers"
   gem "timecop"
   gem "webmock"
-  gem "pundit"
+  gem "xpath", "3.1.0"
 end
 
 group :staging, :production do
