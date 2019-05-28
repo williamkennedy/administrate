@@ -51,7 +51,7 @@ module Administrate
 
       def attributes
         klass.reflections.keys +
-          klass.columns.map(&:name) -
+          klass.attribute_names -
           redundant_attributes
       end
 
@@ -100,6 +100,11 @@ module Administrate
 
       def column_types(attr)
         klass.columns.find { |column| column.name == attr }.try(:type)
+        if klass.respond_to?(:attribute_types)
+          klass.attribute_types[attr].type
+        else
+          klass.columns.find { |column| column.name == attr }.try(:type)
+        end
       end
 
       def association_type(attribute)

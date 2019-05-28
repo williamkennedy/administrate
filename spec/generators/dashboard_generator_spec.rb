@@ -82,6 +82,21 @@ describe Administrate::Generators::DashboardGenerator, :generator do
         end
       end
 
+      if Rails.gem_version >= Gem::Version.new("5.0")
+        it "includes virtual attributes" do
+          class Customer < ActiveRecord::Base
+            attribute :plan, :string
+          end
+          dashboard = file("app/dashboards/customer_dashboard.rb")
+
+           run_generator ["customer"]
+
+           expect(dashboard).to contain(
+            'plan: Field::String',
+          )
+        end
+      end
+
       it "includes has_many relationships" do
         dashboard = file("app/dashboards/customer_dashboard.rb")
 
@@ -350,28 +365,28 @@ describe Administrate::Generators::DashboardGenerator, :generator do
         end
       end
 
-      if ActiveRecord.version >= Gem::Version.new(5)
-        it "skips temporary attributes" do
-          begin
-            ActiveRecord::Schema.define do
-              create_table :accounts
-            end
+      #if ActiveRecord.version >= Gem::Version.new(5)
+        #it "skips temporary attributes" do
+          #begin
+            #ActiveRecord::Schema.define do
+              #create_table :accounts
+            #end
 
-            class Account < ActiveRecord::Base
-              reset_column_information
-              attribute :tmp_attribute, :boolean
-            end
+            #class Account < ActiveRecord::Base
+              #reset_column_information
+              #attribute :tmp_attribute, :boolean
+            #end
 
-            dashboard = file("app/dashboards/account_dashboard.rb")
+            #dashboard = file("app/dashboards/account_dashboard.rb")
 
-            run_generator ["account"]
+            #run_generator ["account"]
 
-            expect(dashboard).not_to contain("tmp_attribute")
-          ensure
-            remove_constants :Account
-          end
-        end
-      end
+            #expect(dashboard).not_to contain("tmp_attribute")
+          #ensure
+            #remove_constants :Account
+          #end
+        #end
+      #end
     end
 
     describe "COLLECTION_ATTRIBUTES" do
