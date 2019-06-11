@@ -27,13 +27,13 @@ module Administrate
       def run_dashboard_generators
         singular_dashboard_resources.each do |resource|
           call_generator "administrate:dashboard", resource,
-            "--namespace", namespace
+            "--namespace", namespace, "--no-routes"
         end
       end
 
       private
 
-      def namespace
+      def admin_namespace
         options[:namespace]
       end
 

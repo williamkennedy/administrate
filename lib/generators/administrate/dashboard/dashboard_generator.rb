@@ -25,6 +25,7 @@ module Administrate
       READ_ONLY_ATTRIBUTES = %w[id created_at updated_at]
 
       class_option :namespace, type: :string, default: "admin"
+      class_option :routes, type: :boolean, default: true, description: "Insert admin routes for resource"
 
       source_root File.expand_path("../templates", __FILE__)
 
@@ -43,15 +44,20 @@ module Administrate
         template("controller.rb.erb", destination)
       end
 
-      def add_route
-        in_root do
-          inject_into_file "config/routes.rb", "resources :#{plural_route_name}", after: /namespace :#{namespace} do\s*\n/m, verbose: false, force: false
-        end
+      def admin_route
+        return unless options[:routes]
+
+        routes   = Rails.root.join("config/routes.rb")
+        content  = "resources :#{plural_route_name}\n"
+        sentinel = /namespace :#{admin_namespace}.*\n/
+        indent   = File.binread(routes)[/\n(\s*)namespace :#{admin_namespace}/, 1] || ""
+
+        inject_into_file routes, indent + "  " + content, after: sentinel
       end
 
       private
 
-      def namespace
+      def admin_namespace
         options[:namespace]
       end
 
