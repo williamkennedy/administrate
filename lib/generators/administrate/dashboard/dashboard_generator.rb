@@ -45,7 +45,7 @@ module Administrate
 
       def add_route
         in_root do
-          inject_into_file "config/routes.rb", , after: /namespace :#{namespace} do\s*\n/m, verbose: false, force: false
+          inject_into_file "config/routes.rb", "resources :#{plural_route_name}", after: /namespace :#{namespace} do\s*\n/m, verbose: false, force: false
         end
       end
 
