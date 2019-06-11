@@ -74,6 +74,10 @@ module Administrate
         end
       end
 
+      def attr_name(attribute)
+        attribute.gsub(/rich_text_/, '')
+      end
+
       def field_type(attribute)
         type = column_type_for_attribute(attribute.to_s)
 
@@ -110,7 +114,11 @@ module Administrate
       def association_type(attribute)
         relationship = klass.reflections[attribute.to_s]
         if relationship.has_one?
-          "Field::HasOne"
+          if relationship.options[:class_name] == "ActionText::RichText"
+            "Field::RichText"
+          else
+            "Field::HasOne"
+          end
         elsif relationship.collection?
           "Field::HasMany" + relationship_options_string(relationship)
         elsif relationship.polymorphic?
