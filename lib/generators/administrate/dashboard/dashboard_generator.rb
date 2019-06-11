@@ -43,6 +43,12 @@ module Administrate
         template("controller.rb.erb", destination)
       end
 
+      def add_route
+        in_root do
+          inject_into_file "config/routes.rb", , after: /namespace :#{namespace} do\s*\n/m, verbose: false, force: false
+        end
+      end
+
       private
 
       def namespace
