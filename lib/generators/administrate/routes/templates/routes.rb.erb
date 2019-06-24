@@ -1,5 +1,5 @@
-namespace :<%= namespace %> do
-<% dashboard_resources.each do |resource| %>    resources :<%= resource %>
+namespace :<%= admin_namespace %> do
+<% dashboard_resources.each do |resource| %>  resources :<%= resource %>
 <%end%>
-    root to: "<%= dashboard_resources.first %>#index"
-  end
+  root to: "<%= dashboard_resources.first %>#index"
+end
