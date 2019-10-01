@@ -115,7 +115,6 @@ module Administrate
       end
 
       def column_types(attr)
-        klass.columns.find { |column| column.name == attr }.try(:type)
         if klass.respond_to?(:attribute_types)
           klass.attribute_types[attr].type
         else
