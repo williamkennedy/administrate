@@ -92,7 +92,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           run_generator ["customer"]
 
           expect(dashboard).to contain(
-            'plan: Field::String',
+            "plan: Field::String",
           )
         end
       end
