@@ -18,14 +18,13 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "factory_bot_rails"
-  gem "i18n-tasks", "0.9.24"
+  gem "i18n-tasks", "0.9.29"
   gem "pry-rails"
-  gem "rspec-rails"
 end
 
 group :test do
   gem "ammeter"
-  gem "capybara", "2.18.0"
+  gem "capybara", "3.29.0"
   gem "database_cleaner"
   gem "formulaic"
   gem "launchy"
@@ -34,11 +33,10 @@ group :test do
   gem "shoulda-matchers"
   gem "timecop"
   gem "webmock"
-  gem "xpath", "3.1.0"
+  gem "xpath", "3.2.0"
 end
 
 group :staging, :production do
   gem "rack-timeout"
-  gem "rails_stdout_logging"
   gem "uglifier"
 end

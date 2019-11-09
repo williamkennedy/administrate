@@ -25,7 +25,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             create_table(:foos) { |t| t.timestamps null: false }
           end
 
-          class Foo < ActiveRecord::Base
+          class Foo < ApplicationRecord
             reset_column_information
           end
 
@@ -47,7 +47,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             create_table(:foos) { |t| t.string :name }
           end
 
-          class Foo < ActiveRecord::Base
+          class Foo < ApplicationRecord
             reset_column_information
           end
 
@@ -67,7 +67,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             create_table(:foos) { |t| t.inet :ip_address }
           end
 
-          class Foo < ActiveRecord::Base
+          class Foo < ApplicationRecord
             reset_column_information
           end
 
@@ -106,7 +106,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
       end
 
       it "looks for class_name options on has_many fields" do
-        class Customer < ActiveRecord::Base
+        class Customer < ApplicationRecord
           reset_column_information
           has_many :purchases, class_name: "Order", foreign_key: "purchase_id"
         end
@@ -128,7 +128,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class InventoryItem < ActiveRecord::Base
+          class InventoryItem < ApplicationRecord
             reset_column_information
           end
 
@@ -153,7 +153,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Shipment < ActiveRecord::Base
+          class Shipment < ApplicationRecord
             enum status: [:ready, :processing, :shipped]
             reset_column_information
           end
@@ -175,7 +175,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             create_table(:users) { |t| t.boolean :active }
           end
 
-          class User < ActiveRecord::Base
+          class User < ApplicationRecord
             reset_column_information
           end
 
@@ -200,7 +200,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Event < ActiveRecord::Base
+          class Event < ApplicationRecord
             reset_column_information
           end
 
@@ -229,7 +229,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Concert < ActiveRecord::Base
+          class Concert < ApplicationRecord
             reset_column_information
             has_many :tickets
             has_many :attendees, through: :tickets, source: :person
@@ -237,7 +237,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             has_many :numbers, through: :tickets
           end
 
-          class Ticket < ActiveRecord::Base
+          class Ticket < ApplicationRecord
             reset_column_information
             belongs_to :concert
             belongs_to :person
@@ -246,7 +246,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           end
 
           class Number; end
-          class Person < ActiveRecord::Base
+          class Person < ApplicationRecord
             reset_column_information
           end
 
@@ -269,7 +269,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           ActiveRecord::Schema.define do
             create_table(:comments) { |t| t.references :post }
           end
-          class Comment < ActiveRecord::Base
+          class Comment < ApplicationRecord
             belongs_to :post
           end
 
@@ -293,8 +293,8 @@ describe Administrate::Generators::DashboardGenerator, :generator do
               t.references :recipient
             end
           end
-          class User < ActiveRecord::Base; end
-          class Invitation < ActiveRecord::Base
+          class User < ApplicationRecord; end
+          class Invitation < ApplicationRecord
             belongs_to :sender, class_name: "User"
             belongs_to :recipient, class_name: "User"
           end
@@ -319,7 +319,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
               t.references :commentable, polymorphic: true
             end
           end
-          class Comment < ActiveRecord::Base
+          class Comment < ApplicationRecord
             belongs_to :commentable, polymorphic: true
           end
 
@@ -345,12 +345,12 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Account < ActiveRecord::Base
+          class Account < ApplicationRecord
             reset_column_information
             has_one :profile
           end
 
-          class Ticket < ActiveRecord::Base
+          class Ticket < ApplicationRecord
             reset_column_information
             belongs_to :account
           end
@@ -364,6 +364,29 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           remove_constants :Account, :Ticket
         end
       end
+
+      if ActiveRecord.version >= Gem::Version.new(5)
+        it "skips temporary attributes" do
+          begin
+            ActiveRecord::Schema.define do
+              create_table :accounts
+            end
+
+            class Account < ApplicationRecord
+              reset_column_information
+              attribute :tmp_attribute, :boolean
+            end
+
+            dashboard = file("app/dashboards/account_dashboard.rb")
+
+            run_generator ["account"]
+
+            expect(dashboard).not_to contain("tmp_attribute")
+          ensure
+            remove_constants :Account
+          end
+        end
+      end
     end
 
     describe "COLLECTION_ATTRIBUTES" do
@@ -375,7 +398,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Foo < ActiveRecord::Base
+          class Foo < ApplicationRecord
             reset_column_information
           end
 
@@ -406,7 +429,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
             end
           end
 
-          class Foo < ActiveRecord::Base
+          class Foo < ApplicationRecord
             reset_column_information
           end
 
@@ -432,7 +455,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
           end
         end
 
-        class Foo < ActiveRecord::Base
+        class Foo < ApplicationRecord
           reset_column_information
         end
 
@@ -460,7 +483,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
     it "subclasses Admin::ApplicationController by default" do
       begin
         ActiveRecord::Schema.define { create_table :foos }
-        class Foo < ActiveRecord::Base; end
+        class Foo < ApplicationRecord; end
 
         run_generator ["foo"]
         load file("app/controllers/admin/foos_controller.rb")
@@ -476,7 +499,7 @@ describe Administrate::Generators::DashboardGenerator, :generator do
     it "uses the given namespace to create controllers" do
       begin
         ActiveRecord::Schema.define { create_table :foos }
-        class Foo < ActiveRecord::Base; end
+        class Foo < ApplicationRecord; end
         module Manager
           class ApplicationController < Administrate::ApplicationController; end
         end

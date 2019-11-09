@@ -44,7 +44,7 @@ To accomplish these goals, Administrate follows a few guiding principles:
 ## Getting Started
 
 Administrate supports Rails from 4.2, up to 5.0 and beyond. We support Ruby
-2.2.9 and up.
+2.4 and up.
 
 Add Administrate to your Gemfile and re-bundle:
 
@@ -64,6 +64,21 @@ to see your new dashboard in action.
 
 For more detailed instructions or to make it work with Rails API-only applications, please go through the ['Getting Started` guide](https://administrate-prototype.herokuapp.com/getting_started).
 
+If your apps uses Sprockets 4, you'll need to add Administrate's assets to your `manifest.js` file. To do this, add these two lines to the file:
+
+```
+//= link administrate/application.css
+//= link administrate/application.js
+```
+
+Otherwise, your app will show you this error:
+
+```
+Asset `administrate/application.css` was not declared to be precompiled in production.
+Declare links to your assets in `app/assets/config/manifest.js`.
+```
+
+For more information on why this is necessary, see https://www.schneems.com/2017/11/22/self-hosted-config-introducing-the-sprockets-manifestjs
 
 ## Create Additional Dashboards
 
@@ -133,7 +148,7 @@ community](https://github.com/thoughtbot/administrate/graphs/contributors).
 
 ## License
 
-administrate is Copyright © 2015-2018 thoughtbot.
+administrate is Copyright © 2015-2019 thoughtbot.
 It is free software, and may be redistributed under the terms specified in the
 [LICENSE](/LICENSE.md) file.
 
