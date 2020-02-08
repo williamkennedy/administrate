@@ -54,6 +54,7 @@ specify, including:
 - `Field::BelongsTo`
 - `Field::Boolean`
 - `Field::DateTime`
+- `Field::Date`
 - `Field::Email`
 - `Field::HasMany`
 - `Field::HasOne`
@@ -190,6 +191,11 @@ objects to display as.
 `:timezone` - Specify which timezone `Date` and `DateTime` objects are based
 in.
 
+**Field::Date**
+
+`:format` - Specify what format, using `strftime` you would like `Date`
+objects to display as.
+
 **Field::Select**
 
 `:collection` - Specify the array or range to select from. Defaults to `[]`.
@@ -264,19 +270,6 @@ en:
         one: Happy Customer
         other: Happy Customers
 ```
-
-## Customizing Actions
-
-To enable or disable certain actions you could override `valid_action?` method in your dashboard controller like this:
-
-```ruby
-# disable 'edit' and 'destroy' links
-def valid_action?(name, resource = resource_class)
-  %w[edit destroy].exclude?(name.to_s) && super
-end
-```
-
-Action is one of `new`, `edit`, `show`, `destroy`.
 
 ## Collection Filters
 

@@ -18,13 +18,13 @@ group :development, :test do
   gem "byebug"
   gem "dotenv-rails"
   gem "factory_bot_rails"
-  gem "i18n-tasks", "0.9.29"
+  gem "i18n-tasks", "0.9.30"
   gem "pry-rails"
 end
 
 group :test do
   gem "ammeter"
-  gem "capybara", "3.29.0"
+  gem "capybara", "3.31.0"
   gem "database_cleaner"
   gem "formulaic"
   gem "launchy"
