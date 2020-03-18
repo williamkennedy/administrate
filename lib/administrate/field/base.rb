@@ -16,16 +16,20 @@ module Administrate
         false
       end
 
+      def self.field_type
+        to_s.split("::").last.underscore
+      end
+
+      def self.permitted_attribute(attr, _options = nil)
+        attr
+      end
+
       def initialize(attribute, data, page, options = {})
         @attribute = attribute
         @data = data
         @page = page
         @resource = options.delete(:resource)
         @options = options
-      end
-
-      def self.permitted_attribute(attr, _options = nil)
-        attr
       end
 
       def html_class
@@ -40,15 +44,7 @@ module Administrate
         "/fields/#{self.class.field_type}/#{page}"
       end
 
-      attr_reader :attribute, :data, :page, :resource
-
-      protected
-
-      attr_reader :options
-
-      def self.field_type
-        to_s.split("::").last.underscore
-      end
+      attr_reader :attribute, :data, :options, :page, :resource
     end
   end
 end

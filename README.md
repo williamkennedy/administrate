@@ -1,4 +1,7 @@
-# Administrate
+---
+title: Administrate
+home: true
+---
 
 [![CircleCI](https://img.shields.io/circleci/project/github/thoughtbot/administrate.svg)](https://circleci.com/gh/thoughtbot/administrate/tree/master)
 [![Gem Version](https://badge.fury.io/rb/administrate.svg)](https://badge.fury.io/rb/administrate)
@@ -62,7 +65,7 @@ $ rails generate administrate:install
 Restart your server, and visit http://localhost:3000/admin
 to see your new dashboard in action.
 
-For more detailed instructions or to make it work with Rails API-only applications, please go through the ['Getting Started` guide](https://administrate-prototype.herokuapp.com/getting_started).
+For more detailed instructions or to make it work with Rails API-only applications, please go through the ['Getting Started' guide](https://administrate-prototype.herokuapp.com/getting_started).
 
 If your apps uses Sprockets 4, you'll need to add Administrate's assets to your `manifest.js` file. To do this, add these two lines to the file:
 
