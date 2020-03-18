@@ -2,7 +2,7 @@ module Administrate
   class Order
     def initialize(attribute = nil, direction = nil)
       @attribute = attribute
-      @direction = direction || :asc
+      @direction = sanitize_direction(direction)
     end
 
     def apply(relation)
@@ -34,6 +34,10 @@ module Administrate
 
     attr_reader :attribute
 
+    def sanitize_direction(direction)
+      %w[asc desc].include?(direction.to_s) ? direction.to_sym : :asc
+    end
+
     def reversed_direction_param_for(attr)
       if ordered_by?(attr)
         opposite_direction
@@ -43,7 +47,7 @@ module Administrate
     end
 
     def opposite_direction
-      direction.to_sym == :asc ? :desc : :asc
+      direction == :asc ? :desc : :asc
     end
 
     def order_by_association(relation)
@@ -56,13 +60,13 @@ module Administrate
 
     def order_by_count(relation)
       relation.
-      left_joins(attribute.to_sym).
-      group(:id).
-      reorder("COUNT(#{attribute}.id) #{direction}")
+        left_joins(attribute.to_sym).
+        group(:id).
+        reorder("COUNT(#{attribute}.id) #{direction}")
     end
 
     def order_by_id(relation)
-      relation.reorder("#{attribute}_id #{direction}")
+      relation.reorder("#{foreign_key(relation)} #{direction}")
     end
 
     def has_many_attribute?(relation)
@@ -75,6 +79,10 @@ module Administrate
 
     def reflect_association(relation)
       relation.klass.reflect_on_association(attribute.to_s)
+    end
+
+    def foreign_key(relation)
+      reflect_association(relation).foreign_key
     end
   end
 end

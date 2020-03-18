@@ -1,4 +1,6 @@
-# Customizing attribute partials
+---
+title: Customizing attribute partials
+---
 
 Occasionally you might want to change how specific types of attributes appear
 across all dashboards. You can customize the following built in field types:
@@ -6,6 +8,7 @@ across all dashboards. You can customize the following built in field types:
 - `belongs_to`
 - `boolean`
 - `date_time`
+- `date`
 - `email`
 - `has_many`
 - `has_one`

@@ -1,4 +1,6 @@
-# Customizing controller actions
+---
+title: Customizing controller actions
+---
 
 When you install Administrate into your app,
 we generate empty controllers for each of your resources.
@@ -41,3 +43,16 @@ class Admin::FoosController < Admin::ApplicationController
   # end
 end
 ```
+
+## Customizing Actions
+
+To enable or disable certain actions you could override `valid_action?` method in your dashboard controller like this:
+
+```ruby
+# disable 'edit' and 'destroy' links
+def valid_action?(name, resource = resource_class)
+  %w[edit destroy].exclude?(name.to_s) && super
+end
+```
+
+Action is one of `new`, `edit`, `show`, `destroy`.

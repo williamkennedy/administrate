@@ -1,3 +1,4 @@
+require "active_record"
 require "administrate/order"
 
 describe Administrate::Order do
@@ -50,6 +51,17 @@ describe Administrate::Order do
         expect(relation).to have_received(:reorder).with("table_name.name desc")
         expect(ordered).to eq(relation)
       end
+
+      it "sanitizes arbitary direction parameters" do
+        order = Administrate::Order.new(:name, :foo)
+        relation = relation_with_column(:name)
+        allow(relation).to receive(:reorder).and_return(relation)
+
+        ordered = order.apply(relation)
+
+        expect(relation).to have_received(:reorder).with("table_name.name asc")
+        expect(ordered).to eq(relation)
+      end
     end
 
     context "when relation has_many association" do
@@ -72,12 +84,15 @@ describe Administrate::Order do
     context "when relation has belongs_to association" do
       it "orders by id" do
         order = Administrate::Order.new(:name)
-        relation = relation_with_association(:belongs_to)
+        relation = relation_with_association(
+          :belongs_to,
+          foreign_key: "some_foreign_key",
+        )
         allow(relation).to receive(:reorder).and_return(relation)
 
         ordered = order.apply(relation)
 
-        expect(relation).to have_received(:reorder).with("name_id asc")
+        expect(relation).to have_received(:reorder).with("some_foreign_key asc")
         expect(ordered).to eq(relation)
       end
     end
@@ -175,9 +190,15 @@ describe Administrate::Order do
     )
   end
 
-  def relation_with_association(association)
+  def relation_with_association(association, foreign_key: "#{association}_id")
     double(
-      klass: double(reflect_on_association: double(macro: association)),
+      klass: double(
+        reflect_on_association: double(
+          "#{association}_reflection",
+          macro: association,
+          foreign_key: foreign_key,
+        ),
+      ),
     )
   end
 end
