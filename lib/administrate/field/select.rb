@@ -14,7 +14,12 @@ module Administrate
       private
 
       def collection
-        @collection ||= options.fetch(:collection, [])
+        values = options.fetch(:collection, [])
+        if values.respond_to? :call
+          return values.arity.positive? ? values.call(self) : values.call
+        end
+
+        @collection ||= values
       end
     end
   end

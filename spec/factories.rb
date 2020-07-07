@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :customer do
-    country
+    association :territory, factory: :country
     sequence(:name) { |n| "Customer #{n}" }
     email { name.downcase.gsub(" ", "_") + "@example.com" }
 
@@ -44,6 +44,7 @@ FactoryBot.define do
       "https://cdn.recombu.com/mobile/images/news/M11370/1264769196_w670.jpg"
     end
     product_meta_tag
+    release_year { [2018, 2019, 2020].sample }
   end
 
   factory :product_meta_tag do
