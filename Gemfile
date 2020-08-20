@@ -21,6 +21,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "i18n-tasks", "0.9.31"
   gem "pry-rails"
+  gem "yard"
 end
 
 group :test do
@@ -29,8 +30,8 @@ group :test do
   gem "database_cleaner"
   gem "formulaic"
   gem "launchy"
-  gem "poltergeist"
   gem "pundit"
+  gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "timecop"
   gem "webmock"
