@@ -46,8 +46,7 @@ To accomplish these goals, Administrate follows a few guiding principles:
 
 ## Getting Started
 
-Administrate supports Rails from 4.2, up to 5.0 and beyond. We support Ruby
-2.4 and up.
+Administrate supports Rails 5.0 onwards. We support Ruby 2.4 and up.
 
 Add Administrate to your Gemfile and re-bundle:
 
@@ -104,7 +103,7 @@ git repository, too.
 
 Please see [CONTRIBUTING.md](/CONTRIBUTING.md).
 
-administrate was originally written by Grayson Wright and is now maintained by
+administrate was originally written by Grace Youngblood and is now maintained by
 Nick Charlton. Many improvements and bugfixes were contributed by the [open
 source
 community](https://github.com/thoughtbot/administrate/graphs/contributors).

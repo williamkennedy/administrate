@@ -48,12 +48,13 @@ feature "log entries index page" do
     expect(current_path).to eq(new_admin_log_entry_path)
   end
 
-  scenario "user deletes record" do
+  scenario "user deletes record", js: true do
     create(:log_entry)
 
     visit admin_log_entries_path
-    click_on t("administrate.actions.destroy")
-
+    accept_confirm do
+      click_on t("administrate.actions.destroy")
+    end
     expect(page).to have_flash(
       t("administrate.controller.destroy.success", resource: "LogEntry"),
     )

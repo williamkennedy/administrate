@@ -28,7 +28,7 @@ customer_attributes = Array.new(100) do
   {
     name: name,
     email: Faker::Internet.safe_email(name: name),
-    country: countries.sample,
+    territory: countries.sample,
     password: Faker::Internet.password,
   }
 end
@@ -52,6 +52,24 @@ product_attributes.each do |attributes|
     meta_description: Faker::Movies::LordOfTheRings.location,
   }
   Product.create! attributes.merge(price: 20 + rand(50))
+end
+
+Product.find_each do |p|
+  Page.create!(
+    title: "Something about #{p.name}",
+    body: Faker::Lorem.paragraph,
+    product: p,
+  )
+  Page.create!(
+    title: "The secrets of the game #{p.name}",
+    body: Faker::Lorem.paragraph,
+    product: p,
+  )
+  Page.create!(
+    title: "If you liked #{p.name}, you will love these games",
+    body: Faker::Lorem.paragraph,
+    product: p,
+  )
 end
 
 customers.each do |customer|

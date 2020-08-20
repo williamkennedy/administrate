@@ -9,7 +9,7 @@ module Administrate
                                            search_term).run
       resources = apply_collection_includes(resources)
       resources = order.apply(resources)
-      resources = resources.page(params[:page]).per(records_per_page)
+      resources = resources.page(params[:_page]).per(records_per_page)
       page = Administrate::Page::Collection.new(dashboard, order: order)
 
       render locals: {
@@ -27,7 +27,7 @@ module Administrate
     end
 
     def new
-      resource = resource_class.new
+      resource = new_resource
       authorize_resource(resource)
       render locals: {
         page: Administrate::Page::Form.new(dashboard, resource),
@@ -101,10 +101,27 @@ module Administrate
     end
 
     def order
-      @order ||= Administrate::Order.new(
-        params.fetch(resource_name, {}).fetch(:order, nil),
-        params.fetch(resource_name, {}).fetch(:direction, nil),
-      )
+      @order ||= Administrate::Order.new(sorting_attribute, sorting_direction)
+    end
+
+    def sorting_attribute
+      sorting_params.fetch(:order) { default_sorting_attribute }
+    end
+
+    def default_sorting_attribute
+      nil
+    end
+
+    def sorting_direction
+      sorting_params.fetch(:direction) { default_sorting_direction }
+    end
+
+    def default_sorting_direction
+      nil
+    end
+
+    def sorting_params
+      Hash.try_convert(request.query_parameters[resource_name]) || {}
     end
 
     def dashboard
@@ -144,6 +161,8 @@ module Administrate
         else
           raise "Unrecognised param data: #{data.inspect}"
         end
+      elsif data.is_a?(ActionController::Parameters)
+        data.transform_values { |v| read_param_value(v) }
       else
         data
       end

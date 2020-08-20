@@ -1,11 +1,25 @@
 class Product < ApplicationRecord
+  def self.policy_class=(policy)
+    @policy_class = policy
+  end
+
+  def self.policy_class
+    @policy_class ||= ProductPolicy
+  end
+
   has_many :line_items, dependent: :destroy
+  has_many :pages, dependent: :destroy
   has_one :product_meta_tag, dependent: :destroy
 
   validates :description, presence: true
   validates :image_url, presence: true
   validates :name, presence: true
   validates :price, presence: true
+  validates :release_year,
+            numericality: {
+              less_than_or_equal_to: ->(_product) { Time.current.year },
+            },
+            allow_blank: true
   validates :slug, uniqueness: true
   validate :valid_slug
 
