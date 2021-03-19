@@ -25,11 +25,28 @@ describe "documentation navigation" do
     )
   end
 
+  it "shows the LICENSE in both forms" do
+    visit("/license")
+
+    expect(page).to have_content("The MIT License (MIT)")
+
+    visit("/LICENSE.md")
+
+    expect(page).to have_content("The MIT License (MIT)")
+  end
+
   it "shows other docs pages" do
     visit("/getting_started")
 
     expect(page).to have_css("div.main h1", text: "Getting Started")
     expect(page).to have_content("Administrate is released as a Ruby gem")
+  end
+
+  it "shows nested docs pages" do
+    visit("/guides/hiding_dashboards_from_sidebar")
+
+    expect(page).to have_css("div.main h1", text: "Hiding Dashboards from")
+    expect(page).to have_content("Resources can be removed form the sidebar")
   end
 
   it "links to each documentation page" do
