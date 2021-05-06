@@ -12,8 +12,8 @@ describe "fields/date_time/_index", type: :view do
     )
 
     render(
-      partial: "fields/date_time/index.html.erb",
-      locals: { field: date_time, namespace: "admin" },
+      partial: "fields/date_time/index",
+      locals: { field: date_time, namespace: :admin },
     )
   end
 end

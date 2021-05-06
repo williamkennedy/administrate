@@ -10,7 +10,7 @@ describe "fields/has_one/_index", type: :view do
       )
 
       render(
-        partial: "fields/has_one/index.html.erb",
+        partial: "fields/has_one/index",
         locals: { field: has_one },
       )
 
@@ -30,8 +30,8 @@ describe "fields/has_one/_index", type: :view do
       )
 
       render(
-        partial: "fields/has_one/index.html.erb",
-        locals: { field: has_one, namespace: "admin" },
+        partial: "fields/has_one/index",
+        locals: { field: has_one, namespace: :admin },
       )
 
       expected = "<a href=\"#{product_path}\">#{product.name}</a>"
